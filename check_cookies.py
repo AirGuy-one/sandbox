@@ -1,13 +1,20 @@
-import requests
+import asyncio
 
-url = 'http://0.0.0.0/api/'
+import aiohttp
 
-session = requests.Session()
 
-response = session.get(url)
+async def main():
+    urls = [
+        "https://fake-json-api.mock.beeceptor.com/users",
+        "https://fake-json-api.mock.beeceptor.com/users",
+        "https://fake-json-api.mock.beeceptor.com/users",
+    ]
+    async with aiohttp.ClientSession() as session:
+        tasks = [session.get(url) for url in urls]
+        responses = await asyncio.gather(*tasks)
+        results = [await response.json() for response in responses]
+        for result in results:
+            print(result)
 
-cookies = session.cookies
 
-print("Cookies received:")
-for cookie in cookies:
-    print(f"{cookie.name}: {cookie.value}")
+asyncio.run(main())

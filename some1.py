@@ -1,7 +1,8 @@
-nums = [1, 2, 3]
+def outer(x):
+    def inner():
+        return x
+    return inner
 
-for i in range(4, 10):
-    print(nums[i])
-
-
+closure_func = outer(10)
+print(closure_func.__closure__)  # (<cell at ...>,)
 print('some')
